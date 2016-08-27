@@ -10,7 +10,7 @@ COOKIE_DOMAIN=$(whiptail --title "$TITLE" --inputbox "Enter Login Cookie Domain.
 OPENAMPWD=$(whiptail --title "$TITLE" --passwordbox "Set OpenAM amAdmin user passsword." 9 50 3>&1 1>&2 2>&3)
 OPENAMPWDCONFIRM=$(whiptail --title "$TITLE" --passwordbox "Confirm OpenAM amAdmin user passsword." 9 50 3>&1 1>&2 2>&3)
 if [[ "x$OPENAMPWD" != "x$OPENAMPWDCONFIRM" ]]; then
-    whiptail --title "$TITLE" --msgbox "Passwords do not match, exiting."
+    whiptail --title "$TITLE" --msgbox "Passwords do not match, exiting." 9 50
     exit 1;
 fi
 unset OPENAMPWDCONFIRM
@@ -19,8 +19,8 @@ echo $OPENAMPWD > $RSNA_ROOT/conf/ampwd.txt
 chmod 400 $RSNA_ROOT/conf/ampwd.txt
 chown edge $RSNA_ROOT/conf/ampwd.txt
 
-sed -i -e '/ADMIN_PWD=/d' -e '/SERVER_URL=/d' -e '/COOKIE_DOMAIN=/d' $RSNA_ROOT/scripts/openam.config
-sed -i -e "1i ADMIN_PWD=$OPENAMPWD" -e "1i SERVER_URL=http://$SERVER_HOST:3000" -e "1i COOKIE_DOMAIN=$COOKIE_DOMAIN" $RSNA_ROOT/scripts/openam.config
+sed -i -e '/ADMIN_PWD=/d' -e '/ADMIN_CONFIRM_PWD=/d' -e '/SERVER_URL=/d' -e '/COOKIE_DOMAIN=/d' $RSNA_ROOT/scripts/openam.config
+sed -i -e "1i ADMIN_PWD=$OPENAMPWD" -e "1i ADMIN_CONFIRM_PWD=$OPENAMPWD" -e "1i SERVER_URL=http://$SERVER_HOST:3000" -e "1i COOKIE_DOMAIN=$COOKIE_DOMAIN" $RSNA_ROOT/scripts/openam.config
 
 unset OPENAMPWD
 
